@@ -27,6 +27,7 @@ public class Shipping_methodAPIController {
         return new ResponseEntity<>(Responses, HttpStatus.OK);
     }
 
+    @CrossOrigin(origins = "http://localhost:9090")
     @GetMapping(value = "/getMethod")
     public ResponseEntity<Response> getShipping_methodById(@RequestParam("Address") String Address) {
         Shipping_method shipping_method = shipping_methodService.getShipping_methodByAddress(Address);

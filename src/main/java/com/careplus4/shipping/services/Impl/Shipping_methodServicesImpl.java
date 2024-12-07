@@ -48,7 +48,7 @@ public class Shipping_methodServicesImpl implements iShipping_methodServices {
 
     @Override
     public Shipping_method getShipping_methodByAddress(String address) {
-        if (address.equals("Tp. Hồ Chí Minh")) {
+        if (address.equals("Hồ Chí Minh")) {
             return shipping_methodRepository.findById("SPM0001").get();
         }
         return shipping_methodRepository.findById("SPM0002").get();
