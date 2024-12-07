@@ -40,6 +40,10 @@ public class Package implements java.io.Serializable {
     @Temporal(TemporalType.DATE)
     private java.util.Date date;
 
+    @Column(name = "UpdateDate")
+    @Temporal(TemporalType.DATE)
+    private java.util.Date updateDate;
+
     @Column(name = "Status", columnDefinition = "NVARCHAR(255)", nullable = false)
     @NotEmpty(message = "Status is required")
     private String status;
@@ -54,7 +58,7 @@ public class Package implements java.io.Serializable {
 
     // Constructor with all fields
     public Package(String id, String idBill, String idShippingMethod, String receiverName,
-                   String userPhone, String address, java.util.Date date,
+                   String userPhone, String address, java.util.Date date, java.util.Date updateDate,
                    String status, BigDecimal totalAmount) {
         this.id = id;
         this.idBill = idBill;
@@ -63,12 +67,13 @@ public class Package implements java.io.Serializable {
         this.userPhone = userPhone;
         this.address = address;
         this.date = date;
+        this.updateDate = updateDate;
         this.status = status;
         this.totalAmount = totalAmount;
     }
 
     public Package(String idBill, String idShippingMethod, String receiverName,
-                   String userPhone, String address, java.util.Date date,
+                   String userPhone, String address, java.util.Date date, java.util.Date updateDate,
                    String status, BigDecimal totalAmount) {
         this.idBill = idBill;
         this.idShippingMethod = idShippingMethod;
@@ -76,6 +81,7 @@ public class Package implements java.io.Serializable {
         this.userPhone = userPhone;
         this.address = address;
         this.date = date;
+        this.updateDate = updateDate;
         this.status = status;
         this.totalAmount = totalAmount;
     }
@@ -135,6 +141,14 @@ public class Package implements java.io.Serializable {
 
     public void setDate(java.util.Date date) {
         this.date = date;
+    }
+
+    public java.util.Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(java.util.Date updateDate) {
+        this.updateDate = updateDate;
     }
 
     public String getStatus() {

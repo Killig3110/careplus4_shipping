@@ -21,7 +21,7 @@ public class Shipping_methodAPIController {
     private Shipping_methodServicesImpl shipping_methodService;
 
     @GetMapping
-    public ResponseEntity<Response> getSipping_method() {
+    public ResponseEntity<Response> getShipping_method() {
         List<Shipping_method> shipping_methods = shipping_methodService.findAll();
         Response Responses = new Response(true, "Lấy danh sách thành công", shipping_methods);
         return new ResponseEntity<>(Responses, HttpStatus.OK);

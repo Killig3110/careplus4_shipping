@@ -4,6 +4,7 @@ import com.careplus4.shipping.entities.Package;
 import com.careplus4.shipping.model.Response;
 import com.careplus4.shipping.services.Impl.PackageServicesImpl;
 import com.careplus4.shipping.services.Impl.Shipping_methodServicesImpl;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,6 +75,8 @@ public class PackageAPIController {
                                                    @RequestParam("receiverName") String receiverName,
                                                    @RequestParam("userPhone") String userPhone,
                                                    @RequestParam("address") String address,
+                                                   @RequestParam("date") Date date,
+                                                   @RequestParam("updateDate") Date updateDate,
                                                    @RequestParam("Province") String province,
                                                    @RequestParam("status") String status,
                                                    @RequestParam("totalAmount") BigDecimal totalAmount) {
@@ -99,6 +104,8 @@ public class PackageAPIController {
         packagesUpdate.setReceiverName(receiverName);
         packagesUpdate.setUserPhone(userPhone);
         packagesUpdate.setAddress(address);
+        packagesUpdate.setDate(date);
+        packagesUpdate.setUpdateDate(updateDate);
         packagesUpdate.setStatus(status);
         packagesUpdate.setTotalAmount(totalAmount);
         packageService.save(packagesUpdate);
@@ -157,6 +164,9 @@ public class PackageAPIController {
 
         if (status.equals("Đã giao hàng") || status.equals("Đã hủy")) {
             packages.setStatus(status);
+            LocalDate localDate = LocalDate.now();
+            Date date = java.sql.Date.valueOf(localDate);
+            packages.setUpdateDate(date);
             packageService.save(packages);
             return new ResponseEntity<>(new Response(true, "Cập nhật trạng thái thành công", packages), HttpStatus.OK);
         } else {
