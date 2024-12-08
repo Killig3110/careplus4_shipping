@@ -30,4 +30,6 @@ public interface iPackageServices {
     Package findTopByOrderByIdDesc();
 
     Package getPackageByIdBill(String idBill);
+
+    Package findByIdBill(String idBill);
 }

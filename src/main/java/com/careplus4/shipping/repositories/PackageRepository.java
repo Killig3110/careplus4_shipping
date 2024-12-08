@@ -11,4 +11,5 @@ import java.util.List;
 public interface PackageRepository extends JpaRepository<Package, String> {
     Package findTopByOrderByIdDesc(); // Lấy ra co ID lớn nhất
     Package getPackagesByIdBill (String idBill);
+    Package findByIdBill (String idBill);
 }

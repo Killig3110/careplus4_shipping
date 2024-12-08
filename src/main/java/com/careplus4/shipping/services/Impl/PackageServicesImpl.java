@@ -78,4 +78,9 @@ public class PackageServicesImpl implements iPackageServices {
         return packageRepository.getPackagesByIdBill(idBill);
     }
 
+    @Override
+    public Package findByIdBill(String idBill) {
+        return packageRepository.findByIdBill(idBill);
+    }
+
 }

@@ -106,15 +106,13 @@ public class PackageAPIController {
     }
 
     @GetMapping("/checkStatus")
-    public ResponseEntity<Response> checkStatus(@RequestParam("id") String id) {
-        Optional<Package> packages = packageService.findById(id);
-        if (packages.isEmpty()) {
+    public ResponseEntity<Response> checkStatus(@RequestParam("idBill") String idBill) {
+        Package packages = packageService.findByIdBill(idBill);
+        if (packages == null) {
             Response Responses = new Response(false, "Không tìm thấy gói hàng", null);
             return new ResponseEntity<>(Responses, HttpStatus.NOT_FOUND);
         }
-
-        Package packagesCheck = packages.get();
-        Response Responses = new Response(true, "Trạng thái gói hàng", packagesCheck.getStatus());
+        Response Responses = new Response(true, "Trạng thái gói hàng", packages.getStatus());
         return new ResponseEntity<>(Responses, HttpStatus.OK);
     }
 
