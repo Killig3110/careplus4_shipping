@@ -1,6 +1,7 @@
 package com.careplus4.shipping.controller;
 
 import com.careplus4.shipping.entities.Package;
+import com.careplus4.shipping.entities.Shipping_method;
 import com.careplus4.shipping.model.Response;
 import com.careplus4.shipping.services.Impl.PackageServicesImpl;
 import com.careplus4.shipping.services.Impl.Shipping_methodServicesImpl;
@@ -36,23 +37,21 @@ public class PackageAPIController {
 
     @PostMapping("/add_shipping")
     public ResponseEntity<Response> saveShipping(@RequestParam("idBill") String idBill,
-                                                 @RequestParam("idShippingMethod") String idShippingMethod,
                                                  @RequestParam("receiverName") String receiverName,
                                                  @RequestParam("userPhone") String userPhone,
                                                  @RequestParam("address") String address,
-                                                 @RequestParam("Province") String province,
+                                                 @RequestParam("province") String province,
                                                  @RequestParam("totalAmount") BigDecimal totalAmount) {
-        // Kiem tra xem idShippingMethod co ton tai trong database khong
-        Boolean check = shipping_methodService.existsById(idShippingMethod);
-        if (check == false) {
-            Response Responses = new Response(false, "Phương thức vận chuyển không tồn tại", null);
-            return new ResponseEntity<>(Responses, HttpStatus.BAD_REQUEST);
-        }
 
-        // Kiem tra xem trong address co chua tinh hay khong
-        if (address.contains(province) == false) {
-            address = address + ", " + province;
-        }
+        Shipping_method shipping_method = shipping_methodService.getShipping_methodByAddress(province);
+        String idShippingMethod = shipping_method.getId();
+
+        System.out.println("idBill: " + idBill);
+        System.out.println("idShippingMethod: " + idShippingMethod);
+        System.out.println("receiverName: " + receiverName);
+        System.out.println("userPhone: " + userPhone);
+        System.out.println("address: " + address);
+        System.out.println("totalAmount: " + totalAmount);
 
         Package packages = new Package();
         packages.setIdBill(idBill);
@@ -60,7 +59,7 @@ public class PackageAPIController {
         packages.setReceiverName(receiverName);
         packages.setUserPhone(userPhone);
         packages.setAddress(address);
-        packages.setStatus("Đang vận chuyển");
+        packages.setStatus("SHIPPING");
         packages.setTotalAmount(totalAmount);
         packageService.save(packages);
 
@@ -71,7 +70,6 @@ public class PackageAPIController {
     @PutMapping("/update_shipping/{id}")
     public ResponseEntity<Response> updateShipping(@PathVariable("id") String id,
                                                    @RequestParam("idBill") String idBill,
-                                                   @RequestParam("idShippingMethod") String idShippingMethod,
                                                    @RequestParam("receiverName") String receiverName,
                                                    @RequestParam("userPhone") String userPhone,
                                                    @RequestParam("address") String address,
@@ -87,16 +85,8 @@ public class PackageAPIController {
         }
 
         // Kiem tra xem idShippingMethod co ton tai trong database khong
-        Boolean check = shipping_methodService.existsById(idShippingMethod);
-        if (check == false) {
-            Response Responses = new Response(false, "Phương thức vận chuyển không tồn tại", null);
-            return new ResponseEntity<>(Responses, HttpStatus.BAD_REQUEST);
-        }
-
-        // Kiem tra xem trong address co chua tinh hay khong
-        if (address.contains(province) == false) {
-            address = address + ", " + province;
-        }
+        Shipping_method shipping_method = shipping_methodService.getShipping_methodByAddress(province);
+        String idShippingMethod = shipping_method.getId();
 
         Package packagesUpdate = packages.get();
         packagesUpdate.setIdBill(idBill);
@@ -162,7 +152,7 @@ public class PackageAPIController {
             return new ResponseEntity<>(Responses, HttpStatus.NOT_FOUND);
         }
 
-        if (status.equals("Đã giao hàng") || status.equals("Đã hủy")) {
+        if (status.equals("SHIPPED") || status.equals("CANCELLED")) {
             packages.setStatus(status);
             LocalDate localDate = LocalDate.now();
             Date date = java.sql.Date.valueOf(localDate);
