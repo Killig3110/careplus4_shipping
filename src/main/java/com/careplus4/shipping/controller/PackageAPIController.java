@@ -61,49 +61,14 @@ public class PackageAPIController {
         packages.setUserPhone(userPhone);
         packages.setAddress(address);
         packages.setStatus("SHIPPING");
+        LocalDate localDate = LocalDate.now();
+        java.sql.Date date = java.sql.Date.valueOf(localDate.format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        packages.setUpdateDate(date);
         packages.setTotalAmount(totalAmount);
         packageService.save(packages);
 
         Response Responses = new Response(true, "Thêm gói hàng thành công", packages);
         return new ResponseEntity<>(Responses, HttpStatus.CREATED);
-    }
-
-    @PutMapping("/update_shipping/{id}")
-    public ResponseEntity<Response> updateShipping(@PathVariable("id") String id,
-                                                   @RequestParam("idBill") String idBill,
-                                                   @RequestParam("receiverName") String receiverName,
-                                                   @RequestParam("userPhone") String userPhone,
-                                                   @RequestParam("address") String address,
-                                                   @RequestParam("date") Date date,
-                                                   @RequestParam("updateDate") Date updateDate,
-                                                   @RequestParam("Province") String province,
-                                                   @RequestParam("status") String status,
-                                                   @RequestParam("totalAmount") BigDecimal totalAmount) {
-        Optional<Package> packages = packageService.findById(id);
-        if (packages.isEmpty()) {
-            Response Responses = new Response(false, "Không tìm thấy gói hàng", null);
-            return new ResponseEntity<>(Responses, HttpStatus.NOT_FOUND);
-        }
-
-        // Kiem tra xem idShippingMethod co ton tai trong database khong
-        Shipping_method shipping_method = shipping_methodService.getShipping_methodByAddress(province);
-        String idShippingMethod = shipping_method.getId();
-
-        Package packagesUpdate = packages.get();
-        packagesUpdate.setIdBill(idBill);
-        packagesUpdate.setIdShippingMethod(idShippingMethod);
-        packagesUpdate.setReceiverName(receiverName);
-        packagesUpdate.setUserPhone(userPhone);
-        packagesUpdate.setAddress(address);
-        packagesUpdate.setDate(date);
-        packagesUpdate.setUpdateDate(updateDate);
-        packagesUpdate.setStatus(status);
-        packagesUpdate.setTotalAmount(totalAmount);
-        packageService.save(packagesUpdate);
-
-        Response Responses = new Response(true, "Cập nhật gói hàng thành công", packagesUpdate);
-        return new ResponseEntity<>(Responses, HttpStatus.OK);
-
     }
 
     @GetMapping("/checkStatus")

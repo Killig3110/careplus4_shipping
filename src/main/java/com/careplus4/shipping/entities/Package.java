@@ -36,10 +36,6 @@ public class Package implements java.io.Serializable {
     @NotEmpty(message = "Address is required")
     private String address;
 
-    @Column(name = "Date")
-    @Temporal(TemporalType.DATE)
-    private java.util.Date date;
-
     @Column(name = "UpdateDate")
     @Temporal(TemporalType.DATE)
     private java.util.Date updateDate;
@@ -58,7 +54,7 @@ public class Package implements java.io.Serializable {
 
     // Constructor with all fields
     public Package(String id, String idBill, String idShippingMethod, String receiverName,
-                   String userPhone, String address, java.util.Date date, java.util.Date updateDate,
+                   String userPhone, String address, java.util.Date updateDate,
                    String status, BigDecimal totalAmount) {
         this.id = id;
         this.idBill = idBill;
@@ -66,21 +62,19 @@ public class Package implements java.io.Serializable {
         this.receiverName = receiverName;
         this.userPhone = userPhone;
         this.address = address;
-        this.date = date;
         this.updateDate = updateDate;
         this.status = status;
         this.totalAmount = totalAmount;
     }
 
     public Package(String idBill, String idShippingMethod, String receiverName,
-                   String userPhone, String address, java.util.Date date, java.util.Date updateDate,
+                   String userPhone, String address, java.util.Date updateDate,
                    String status, BigDecimal totalAmount) {
         this.idBill = idBill;
         this.idShippingMethod = idShippingMethod;
         this.receiverName = receiverName;
         this.userPhone = userPhone;
         this.address = address;
-        this.date = date;
         this.updateDate = updateDate;
         this.status = status;
         this.totalAmount = totalAmount;
@@ -135,14 +129,6 @@ public class Package implements java.io.Serializable {
         this.address = address;
     }
 
-    public java.util.Date getDate() {
-        return date;
-    }
-
-    public void setDate(java.util.Date date) {
-        this.date = date;
-    }
-
     public java.util.Date getUpdateDate() {
         return updateDate;
     }
@@ -177,7 +163,6 @@ public class Package implements java.io.Serializable {
                 ", receiverName='" + receiverName + '\'' +
                 ", userPhone='" + userPhone + '\'' +
                 ", address='" + address + '\'' +
-                ", date=" + date +
                 ", status='" + status + '\'' +
                 ", totalAmount=" + totalAmount +
                 '}';
