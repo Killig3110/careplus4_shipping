@@ -36,6 +36,7 @@ public class PackageAPIController {
     }
 
     @PostMapping("/add_shipping")
+    @CrossOrigin(origins = "http://localhost:9090")
     public ResponseEntity<Response> saveShipping(@RequestParam("idBill") String idBill,
                                                  @RequestParam("receiverName") String receiverName,
                                                  @RequestParam("userPhone") String userPhone,
@@ -106,6 +107,7 @@ public class PackageAPIController {
     }
 
     @GetMapping("/checkStatus")
+    @CrossOrigin(origins = "http://localhost:9090")
     public ResponseEntity<Response> checkStatus(@RequestParam("idBill") String idBill) {
         Package packages = packageService.findByIdBill(idBill);
         if (packages == null) {
