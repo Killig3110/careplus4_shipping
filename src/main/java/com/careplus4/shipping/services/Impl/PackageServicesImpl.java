@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -83,4 +84,12 @@ public class PackageServicesImpl implements iPackageServices {
         return packageRepository.findByIdBill(idBill);
     }
 
+    @Override
+    public List<Map<String, String>> getIdBillAndStatus() {
+        List<Package> packages = packageRepository.findAll();
+        return packages.stream().map(pkg -> {
+            Map<String, String> map = Map.of("idBill", pkg.getIdBill(), "status", pkg.getStatus());
+            return map;
+        }).toList();
+    }
 }

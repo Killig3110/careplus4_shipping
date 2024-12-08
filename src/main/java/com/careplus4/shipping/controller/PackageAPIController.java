@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -128,6 +129,13 @@ public class PackageAPIController {
             Response Responses = new Response(false, "Trạng thái không hợp lệ", null);
             return new ResponseEntity<>(Responses, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/getIdBillAndStatus")
+    public ResponseEntity<Response> getIdBillAndStatus() {
+        List<Map<String, String>> packages = packageService.getIdBillAndStatus();
+        Response Responses = new Response(true, "Lấy danh sách thành công", packages);
+        return new ResponseEntity<>(Responses, HttpStatus.OK);
     }
 
 }
